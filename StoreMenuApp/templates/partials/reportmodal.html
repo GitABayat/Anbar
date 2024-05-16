@@ -1,0 +1,639 @@
+{% load static %}
+
+
+
+<div class="modal fade" id="usersreportmodal" style="z-index: 20000000000000;" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    مشتری گرامی :
+                </h5>
+
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <p id="usersreportmodalcontent"
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-4 text-start text-dark fw-bold">
+                        </p>
+
+                    </div><!-- End .col-lg-9 -->
+                </div><!-- End .row -->
+            </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->
+
+
+
+
+<div class="modal fade" id="reportmodal" style="z-index: 20000000000000;" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    کاربر گرامی :
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  mb-3 border-bottom">
+                        <label class="ext-start text-dark fw-bold h6">پیام :</label>
+                        <p id="reportmodalcontentText"
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-4 text-start text-dark fw-bold">
+                        </p>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 border-bottom">
+                        <label class="ext-start text-dark fw-bold h6">پیام سیستمی :</label>
+                        <p id="reportmodalcontent"
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-4 text-start text-danger fw-bold">
+
+                        </p>
+
+                    </div><!-- End .col-lg-9 -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> <i
+                                class="fa fa-window-close"></i> بستن</button>
+                    </div>
+                </div><!-- End .row -->
+            </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->
+
+<div class="modal fade" id="TrnasCreateFromRecept" style="z-index: 300000000000000000000;" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable radius-20">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    کاربر گرامی :
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="row mt-1">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <p id="errorShow"
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-start text-danger fw-bold">
+                        </p>
+                        <hr/>
+                        <p
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-start text-dark fw-bold">
+                            آیا مایل به ایجاد سند برای هزینه های جدید هستید ؟
+                        </p>
+                        <div class="modal-footer">
+                            <button id="DontAccept" type="button" class="btn btn-danger"
+                                data-bs-dismiss="modal">انصراف</button>
+                            <button id="TransCreateRID" type="button" class="btn btn-success"
+                                data-bs-dismiss="modal">بلی</button>
+                        </div>
+                    </div><!-- End .col-lg-9 -->
+                </div><!-- End .row -->
+            </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->
+
+<div class="modal fade" id="DeleteConfirm" style="z-index: 300000000000000;" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable radius-20">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    کاربر گرامی :
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="row mt-1">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        <p id="DeleteConfirmContent"
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-start text-dark fw-bold">
+                        </p>
+                        <div class="modal-footer">
+                            <button id="DontAccept" type="button" class="btn btn-danger"
+                                data-bs-dismiss="modal">انصراف</button>
+                            <button id="DeleteConfirmIsOK" type="button" class="btn btn-success"
+                                data-bs-dismiss="modal">بلی</button>
+                        </div>
+                    </div><!-- End .col-lg-9 -->
+                </div><!-- End .row -->
+            </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->
+
+
+
+<div class="modal fade" id="SSTSelect" style="z-index: 30000000000000000000;" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable radius-20">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    انتخاب نوع ریز خدمت :
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="row mt-1">
+                    <div class="col-lg-12">
+                        <div id="ُSSTDetaiShow" class="col-lg-12 text-start text-dark fw-bold">
+
+                        </div>
+                    </div><!-- End .col-lg-9 -->
+                </div><!-- End .row -->
+            </div><!-- End .col-lg-9 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">انصراف</button>
+                <button id="SSTSelectSave" type="button" class="btn btn-success" data-bs-dismiss="modal">اضافه
+                    شود</button>
+            </div>
+        </div><!-- End .row -->
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->
+
+
+<div class="modal fade" id="SSTSelectDetailShow" style="z-index: 30000000000000000000;" aria-hidden="true">
+    <div class="modal-dialog modal-lg radius-20 shadow">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    لیست جزئیات
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="row mt-1">
+                    <div class="col-lg-12">
+                        <div id="ُSSTDetaiShow" class="col-lg-12 text-start text-dark fw-bold">
+                            <table class="table - table-striped table-hover">
+                                <thead>
+                                    <th>عنوان</th>
+                                    <th>تعداد</th>
+                                    <th>مبلغ</th>
+                                    <th>جمع</th>
+                                </thead>
+                                <tbody id="mastertabledetailshow">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">بستن</button>
+                        </div>
+                    </div><!-- End .col-lg-9 -->
+                </div><!-- End .row -->
+            </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->
+
+
+<div class="modal fade" id="SFPrintShowToPrinter" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body table-responsive">
+                <div class="row mt-1">
+                    <div class="col-lg-12">
+                        <div class="col-lg-12 text-start text-dark fw-bold">
+                            <div class="row">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-lg-4 col-md-4 p-1 ">
+                                        <div class="row">
+                                            <p class="border bg-light p-2 radius-5 text-center text-dark fw-bold">
+                                                قبض بیمار</p>
+                                            <hr />
+                                            <div class="col-lg-12"> تاریخ و ساعت :
+                                                <input id="FormDatePrint" disabled
+                                                    class="col-lg-4 form-control fw-bold text-dark" type="text"
+                                                    value="">
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-lg-12"> نوبت :
+                                                <input id="FormNumberPrint" disabled
+                                                    class="col-lg-4 form-control fw-bold text-dark" type="text"
+                                                    value="">
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-lg-12"> پزشک معالج :
+                                                <input id="FormDoctorPrint" disabled
+                                                    class="col-lg-4 form-control fw-bold text-dark" type="text"
+                                                    value="">
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-lg-12"> کاربر ثبت کننده :
+                                                <input id="FormCreatorPrint" disabled
+                                                    class="col-lg-4 form-control fw-bold text-dark" type="text"
+                                                    value="">
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-lg-12">بیمار
+                                                <input id="FormCustomerPrint" disabled type="text"
+                                                    class="col-lg-4 form-control fw-bold text-dark" value="">
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-lg-12">مبلغ (ریال)
+                                                <input id="FormPricePrint" disabled type="text"
+                                                    class="col-lg-4 form-control fw-bold text-dark" value="">
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row d-flex justify-content-center">
+                                            <div class="col-lg-3 col-12"><button onclick="window.print()" type="button"
+                                                    class="btn btn-warning col-12">چاپ</button></div>
+                                            <div class="col-lg-1 col-12"></div>
+                                            <div class="col-lg-3 col-12"><button type="button"
+                                                    class="btn btn-secondary col-12"
+                                                    data-bs-dismiss="modal">بستن</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End .col-lg-9 -->
+                </div><!-- End .row -->
+            </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->
+
+
+
+<div class="modal fade" id="DoctorActModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body table-responsive">
+                <div class="row mt-1">
+                    <div class="container">
+                        <div class="col-lg-12 text-start text-dark fw-bold">
+                            <div class="row">
+                                <div class="d-flex justify-content-center">
+                                    <div class="col-lg-12 col-md-12 p-1 ">
+                                        <div class="row">
+                                            <h5 class="border bg-light p-2 radius-5 text-center text-dark fw-bold">
+                                                پرونده سوابق بیمار</h5>
+                                        </div>
+                                        <br />
+                                        <form id="DoctorActForm" enctype="multipart/form-data" role="form"
+                                            method="post">
+                                            {% csrf_token %}
+                                            <div class="row">
+                                                <br />
+                                                <h6 class="text-center fw-bold">ورود اطلاعات درنظر گرفته شده توسط
+                                                    پزشک
+                                                </h6>
+                                                <br />
+                                                <hr />
+
+                                                <div class="col-lg-6 p-1">
+                                                    <div class="border radius-10">
+                                                        <label for="DoctorSee"
+                                                            class="d-flex justify-content-center mt-1">
+                                                            <h6>مشاهده پزشک</h6>
+                                                        </label>
+                                                        <textarea id="WhatDoctorSee" class="form-control"
+                                                            rows="6"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 p-1">
+                                                    <div class="border radius-10">
+                                                        <label for="DoctorDo"
+                                                            class="d-flex justify-content-center mt-1">
+                                                            <h6>دستور پزشک</h6>
+                                                        </label>
+                                                        <textarea id="WhatDoctorDo" class="form-control"
+                                                            rows="6"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <input id="Actrowid" type="hidden" value="">
+                                            <br />
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">بستن</button>
+                                                <button id="BtnCreateDoctorAction" class="btn btn-success"
+                                                    type="button">ذخیره</button>
+                                            </div>
+                                        </form>
+                                        <br />
+                                        <hr />
+                                        <div class="row">
+                                            <div id="Cinfo">
+
+                                            </div>
+                                            <br />
+                                            <hr />
+                                            <br />
+                                            <h5 class="border bg-light p-2 radius-5 text-center text-dark fw-bold">
+                                                سوابق قبلی بیمار</h5>
+                                            <br />
+                                            <div class="container mt-1 shadow border radius-10 table-responsive"
+                                                style="height: 500px; overflow:scroll;">
+                                                <table class="table table-hover table-stripts">
+                                                    <thead class="sticky-top top-0">
+                                                        <tr>
+                                                            <th class="text-center fw-bold text-dark">تاریخ</th>
+                                                            <th class="text-center fw-bold text-dark">پزشک معالج</th>
+                                                            <th class="text-center fw-bold text-dark">مشاهده</th>
+                                                            <th class="text-center fw-bold text-dark">اقدام</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="TreatmentReport">
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End .col-lg-9 -->
+                    </div><!-- End .row -->
+                </div><!-- End .col-lg-9 -->
+            </div><!-- End .row -->
+        </div><!-- End .col-lg-9 -->
+    </div><!-- End .row -->
+</div>
+
+
+<div class="modal fade" id="DoctorRestActModal" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row mt-1">
+                    <div class="col-lg-12 text-start text-dark fw-bold">
+                        <div class="row">
+                            <div class="d-flex justify-content-center ">
+                                <div class="col-lg-4 col-md-4 mx-auto p-4 border border-dark radius-10">
+                                    <div class="row">
+                                        <h6
+                                            class="text-uppercase border bg-light p-2 radius-5 text-center text-dark fw-bold">
+                                            ساختمان پزشکان</h6>
+                                        <hr />
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="col-12 row">
+                                                    <p class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fw-bold text-dark">
+                                                        تاریخ و
+                                                        ساعت :</p>
+                                                    <p id="RestTruetarikh"
+                                                        class="col-lg-8 col-md-8 col-sm-8 col-xs-8 fw-bold text-dark">
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <p
+                                            class="text-uppercase border bg-light p-2 radius-5 text-center text-dark fw-bold">
+                                            برگه استراحت پزشکی</p>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+
+                                                    <p class="col-lg-8 col-md-8 col-sm-8 col-xs-8  fw-bold text-dark">
+                                                        بدین
+                                                        وسیله
+                                                        گواهی می گردد بیمار خانم/آقا : </p>
+                                                    <p id="RestCustomerName"
+                                                        class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fw-bold text-dark">
+                                                    </p>
+
+                                                </div>
+                                                <br />
+                                                <div class="col-lg-12 ">
+                                                    <div class="row">
+                                                        <div class="col-2">درتاریخ</div>
+                                                        <div class="col-4">
+                                                            <p id="Resttarikh" class="fw-bold text-dark"></p>
+                                                        </div>
+                                                        <div class="col-6"> به این مرکز مراجعه نموده است .</div>
+                                                    </div>
+                                                </div>
+                                                <br />
+
+                                                <form id="RestTimeForm" enctype="multipart/form-data" role="form"
+                                                    method="post" autocomplete="off">
+                                                    {% csrf_token %}
+                                                    <div class="col-lg-12 ">
+                                                        <div class="row">
+                                                            <div class="col-3">و به دلیل : </div>
+                                                            <div class="col-9">
+
+                                                                <textarea id="RestDoctorSee" class="form-control"
+                                                                    rows="2"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <style>
+                                                        .datepicker-plot-area {
+                                                            z-index: 9000000000000000000000;
+                                                        }
+                                                    </style>
+                                                    <div class="row">
+                                                        <div class="col-6 float-start">
+                                                            <div class="col-6">از تاریخ : </div>
+                                                            <div class="col-12"><input id="RestStartDate" type="text"
+                                                                    class="form-control datepicker2 fw-bold text-dark"
+                                                                    value=""></div>
+                                                        </div>
+
+                                                        <div class="col-6 float-end ">
+                                                            <div class="col-6">تا تاریخ : </div>
+                                                            <div class="col-12"><input id="RestEndDate" type="text"
+                                                                    class="form-control datepicker2 fw-bold text-dark"
+                                                                    value=""></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-2">به مدت </div>
+                                                        <div class="col-2" id="restdays"></div>
+                                                        <div class="col-6">روز نیاز به استراحت در منزل دارد .</div>
+                                                    </div>
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-4">پزشک معالج :</div>
+                                                        <div class="col-8">
+                                                            <p id="RestDoctorName" class="fw-bold text-dark"></p>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <p class="text-center text-dark fw-bold">شهرک غرب - فاز 1 خیابان ایران زمین
+                                                - خیابان گلستان جنوبی</p>
+                                            <p class="text-center text-dark fw-bold">جنب مسجد البنی مجتمع پزشکی النبی
+                                                تلفن :88073320</p>
+                                        </div>
+                                        <hr />
+                                        <div class="row d-flex justify-content-center">
+                                            <div class="col-3">
+                                                <button id="BtnRestTimeSave" type="button"
+                                                    class="btn btn-success col-12">ذخیره</button>
+                                            </div>
+                                            <div class="col-3"><button id="RestPrint" disabled onclick="window.print()"
+                                                    type="button" class="btn btn-warning col-12">چاپ</button></div>
+                                            <div class="col-3"><button type="button" class="btn btn-secondary col-12"
+                                                    data-bs-dismiss="modal">بستن</button></div>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End .col-lg-9 -->
+                </div><!-- End .row -->
+            </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->
+
+
+<div class="modal fade" id="UserChangePassModal" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row mt-1">
+                    <div class="col-lg-12 text-start text-dark fw-bold">
+                        <div class="row">
+                            <div class="ChangePassErrors"></div>
+                            <div class="d-flex justify-content-center ">
+
+                                <form id="UsersChangePassForm" enctype="multipart/form-data" role="form" method="post"
+                                    autocomplete="off">
+                                    {% csrf_token %}
+                                    <div class="container-fluid">
+                                        <div class="row p-1 border radius-10 shadow">
+                                            <label for="oldpass">کلمه عبور فعلی</label>
+                                            <input id="oldpass" autocomplete="off" type="password" value="0"
+                                                placeholder="کلمه عبور فعلی را وارد نمایید ..." class="form-control">
+                                        </div>
+
+                                        <div class="row p-1 border radius-10 shadow mt-2">
+                                            <label for="newpass1">کلمه عبور جدید</label>
+                                            <input id="newpass1" autocomplete="off" type="password"
+                                                placeholder="کلمه عبور جدید را وارد نمایید ..." class="form-control">
+                                        </div>
+                                        <div class="row p-1 border radius-10 shadow mt-2">
+                                            <label for="newpass2">تکرار کلمه عبور جدید</label>
+                                            <input id="newpass2" autocomplete="off" type="password"
+                                                placeholder="تکرار کلمه عبور جدید را وارد نمایید ..."
+                                                class="form-control">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger"
+                                            data-bs-dismiss="modal">انصراف</button>
+                                        <button id="UsersChangePasswordSave" type="button" class="btn btn-success">ذخیره
+                                            تغییرات</button>
+                                    </div>
+
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->
+
+
+<div class="modal fade" id="TransActionCreateModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row mt-1">
+                    <div class="col-lg-12 text-start text-dark fw-bold">
+                        <h6 class="text-uppercase border bg-light p-2 radius-5 text-center text-dark fw-bold">
+                            تعیین روش ایجاد سند مالی</h6>
+                        <hr />
+                        <br />
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="typeoftransaction">روش ایجاد سند</label>
+                                <select id="typeoftransaction" class="single-select">
+                                    <option value="0">----------</option>
+                                    <option value="1">تجمعی</option>
+                                    <option value="2">تفکیکی</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                                <label for="transStartDate">از تاریخ : </label>
+                                <input id="transStartDate" type="text" class="form-control datepicker2" value="">
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label for="TransEndDate">تا تاریخ : </label>
+                                <input id="TransEndDate" type="text" class="form-control datepicker2" value="">
+                            </div>
+                        </div>
+
+                        <br />
+                        <p id="CheckError" class="fs-5 fw-bold text-danger"></p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">انصراف</button>
+                            <button id="BtnCreateTransFromRecept" type="button" class="btn btn-success">ایجاد سند
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->
+
+
+
+<div class="modal fade" id="drlistincomereport" style="z-index: 30000000000000000000;" aria-hidden="true">
+    <div class="modal-dialog modal-lg radius-20 shadow">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    لیست جزئیات
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="row mt-1">
+                    <div class="col-lg-12">
+                        <div class="col-lg-12 text-start text-dark fw-bold">
+                            <table class="table - table-striped table-hover">
+                                <thead>
+                                    <th>پزشک</th>
+                                    <th>تعداد</th>
+                                    <th>مبلغ</th>
+                                </thead>
+                                <tbody id="drreport">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">بستن</button>
+                        </div>
+                    </div><!-- End .col-lg-9 -->
+                </div><!-- End .row -->
+            </div><!-- End .col-lg-9 -->
+        </div><!-- End .row -->
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->

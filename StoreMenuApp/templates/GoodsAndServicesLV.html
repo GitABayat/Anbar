@@ -1,0 +1,103 @@
+{% extends 'share/CmsMainpage.html' %}
+{% load static %}
+
+{% block title %}
+{{ super }} گزارش کالا و خدمات 
+{% endblock %}
+
+
+{% block body %}
+<input id="ModelName" type="hidden" value="GoodsAndServices">
+<input id="URLDetail" type="hidden" value="">
+<input id="RedirectURL" type="hidden" value="GoodsAndServicesDT">
+<input id="ModelDetailName" type="hidden" value="">
+<input id="SerializersName" type="hidden" value="GoodsAndServicesSerializers">
+<input id="CreateKeyID" type="hidden" value="CreateForm">
+<input id="UpdateKeyID" type="hidden" value="0">
+<input id="rowid" type="hidden" value="0">
+<input id="UpdateRorwID" type="hidden" value="0">
+<input id="BtnCreateURL" type="hidden" value="Create">
+<input id="BtnUpdateURL" type="hidden" value="Update">
+<br />
+{% include 'partials/NavHeader.html' %}
+<div class="container-floid mt-5">
+    <div class="row">
+        <div class="col-lg-4 float-start">
+            <p class="p-2 fs-5 fw-bold text-dark text-center">فرم ایجاد و ویرایش کالا و خدمات</p>
+            <hr />
+            <div class="card">
+                <div class="card-body">
+                    <form id="MasterForm" enctype="multipart/form-data" role="form" method="post" autocomplete="off">
+                        {% csrf_token %}
+                        <div class="container">
+                            <div class="row">
+
+                                <div class="row mb-2">
+                                    <label for="Name">نام</label>
+                                    <input class="Txt" id="Name" name="Name" type="text" value="">
+                                </div>
+
+                                <div class="row mb-2">
+                                    <label for="Desc">شرح</label>
+                                    <input class="Txt" id="Desc" name="Desc" type="text" value="">
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="col-1">
+                                        <input id="Status" name="Status" type="checkbox" value="">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="Status">غیر فعال</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-12 p-2">
+                                <button id="BtnCreateSave" class="btn btn-success col-12" type="button">ذخیره</button>
+                            </div>
+                            <div class="col-6 float-start p-2">
+                                <button hidden disabled id="BtnUpdateSave" class="btn btn-warning col-12"
+                                    type="button">ذخیره ویرایش</button>
+                            </div>
+                            <div class="col-6 float-end p-2">
+                                <button hidden disabled id="BtnCancelUpdate" class="btn btn-danger col-12"
+                                    type="button">لغو ویرایش</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 float-end">
+            <p class="p-2 fs-5 fw-bold text-dark text-center"> گزارش کالا و خدمات</p>
+
+            <hr />
+            <div class="card">
+                <div class="card-body">
+                    <table class="MasterTable" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th id="SelectAll"><input id="SelectAllInput" type="checkbox" class="select-checkbox">
+                                </th>
+                                <th>کلیدها</th>
+                                <th>کد</th>
+                                <th>نام</th>
+                                <th>وضعیت</th>
+                                <th>شرح</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div><!-- End .col-lg-9 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'partials/reportmodal.html' %}
+{% endblock %}

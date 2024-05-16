@@ -1,0 +1,800 @@
+<body oncontextmenu="return true">
+<link rel="stylesheet" type="text/css" href="Bootstrap-4-4.1.1/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="DataTables-1.10.21/css/dataTables.bootstrap4.css"/>
+<link rel="stylesheet" type="text/css" href="Buttons-1.6.2/css/buttons.bootstrap4.css"/>
+<link rel="stylesheet" type="text/css" href="FixedHeader-3.1.7/css/fixedHeader.bootstrap4.css"/>
+<link rel="stylesheet" type="text/css" href="KeyTable-2.5.2/css/keyTable.bootstrap4.css"/>
+<link rel="stylesheet" type="text/css" href="Responsive-2.2.5/css/responsive.bootstrap4.css"/>
+<link rel="stylesheet" type="text/css" href="Scroller-2.0.2/css/scroller.bootstrap4.css"/>
+<link rel="stylesheet" type="text/css" href="Shttps://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css"/>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script type="text/javascript" src="Bootstrap-4-4.1.1/js/bootstrap.js"></script>
+<script type="text/javascript" src="JSZip-2.5.0/jszip.js"></script>
+<script type="text/javascript" src="pdfmake-0.1.36/pdfmake.js"></script>
+<script type="text/javascript" src="pdfmake-0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="DataTables-1.10.21/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="DataTables-1.10.21/js/dataTables.bootstrap4.js"></script>
+<script type="text/javascript" src="Buttons-1.6.2/js/dataTables.buttons.js"></script>
+<script type="text/javascript" src="Buttons-1.6.2/js/buttons.bootstrap4.js"></script>
+<script type="text/javascript" src="Buttons-1.6.2/js/buttons.colVis.js"></script>
+<script type="text/javascript" src="Buttons-1.6.2/js/buttons.flash.js"></script>
+<script type="text/javascript" src="Buttons-1.6.2/js/buttons.html5.js"></script>
+<script type="text/javascript" src="FixedHeader-3.1.7/js/dataTables.fixedHeader.js"></script>
+<script type="text/javascript" src="KeyTable-2.5.2/js/dataTables.keyTable.js"></script>
+<script type="text/javascript" src="Responsive-2.2.5/js/dataTables.responsive.js"></script>
+<script type="text/javascript" src="Scroller-2.0.2/js/dataTables.scroller.js"></script>
+
+
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.flash.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+
+
+
+
+
+
+<script>
+var table = $('#example').DataTable();
+ 
+table.rows('.important').select();
+
+$(document).ready(function() {
+	// for excel like filter
+	//function cbDropdown(column) {
+	//	return $('<ul>', {
+	//	'class': 'cb-dropdown'
+	//	}).appendTo($('<div>', {
+	//	'class': 'cb-dropdown-wrap'
+	//	}).appendTo(column));
+	//}
+	
+    // Setup - add a text input to each footer cell
+	//$('#example').append('<caption style="caption-side: top">A fictional company\'s staff table.</caption>');
+    $('#example thead tr').clone(true).appendTo( '#example thead' );
+	$('#example thead tr:eq(1) th:eq(0)').html('&nbsp;;&nbsp;;&nbsp;;&nbsp;;&nbsp;;&nbsp;;');
+    $('#example thead tr:eq(1) th').each( function (i) {
+		if(i>0){
+			var title = $(this).text();
+	
+			$(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+			
+			$( 'input', this ).on( 'keyup change', function () {
+				if ( table.column(i).search() !== this.value ) {
+					table
+						.column(i)
+						.search( this.value,regex=true )
+						.draw();
+				
+				}
+			} );
+		}
+    } );
+    var table = $('#example').DataTable( {
+	//for excel like filter remember to deactive scrollY
+	//	initComplete: function() {
+    //  this.api().columns().every(function() {
+    //    var column = this;
+    //    var ddmenu = cbDropdown($(column.header()))
+    //      .on('change', ':checkbox', function() {
+    //        var active;
+    //        var vals = $(':checked', ddmenu).map(function(index, element) {
+    //          active = true;
+    //          return $.fn.dataTable.util.escapeRegex($(element).val());
+    //        }).toArray().join('|');
+	//
+    //        column
+    //          .search(vals.length > 0 ? '^(' + vals + ')$' : '', true, false)
+    //          .draw();
+	//
+    //        // Highlight the current item if selected.
+    //        if (this.checked) {
+    //          $(this).closest('li').addClass('active');
+    //        } else {
+    //          $(this).closest('li').removeClass('active');
+    //        }
+	//
+    //        // Highlight the current filter if selected.
+    //        var active2 = ddmenu.parent().is('.active');
+    //        if (active && !active2) {
+    //          ddmenu.parent().addClass('active');
+    //        } else if (!active && active2) {
+    //          ddmenu.parent().removeClass('active');
+    //        }
+    //      });
+	//
+    //    column.data().unique().sort().each(function(d, j) {
+    //      var // wrapped
+    //        $label = $('<label>'),
+    //        $text = $('<span>', {
+    //          text: d
+    //        }),
+    //        $cb = $('<input>', {
+    //          type: 'checkbox',
+    //          value: d
+    //        });
+	//
+    //      $text.appendTo($label);
+    //      $cb.appendTo($label);
+	//
+    //      ddmenu.append($('<li>').append($label));
+    //    });
+    //  });
+    //},
+		"ordering": true,
+		scrollY: 300,
+        orderCellsTop: true,
+        fixedHeader: true,
+       columnDefs: [ {
+            orderable: false,
+            className: 'select-checkbox',
+            targets:   0
+        } ],
+        select: {
+            style: 'multi',
+            selector: 'tr'
+        },
+        order: [[ 1, 'asc' ]],
+		dom: 'Blfrtip',
+        buttons: [
+			{
+                extend: 'copy',
+				title: '',
+				messageTop: null,
+				messageBottom: null,
+                exportOptions: {
+                    columns: ':visible',
+                }
+            },
+			{
+                extend: 'csv',
+				title: '',
+				messageTop: null,
+				messageBottom: null,
+                exportOptions: {
+                    columns: ':visible',
+                }
+            },
+			{
+                extend: 'excel',
+				title: '',
+				messageTop: null,
+				messageBottom: null,
+                exportOptions: {
+                    columns: ':visible',
+                }
+            },
+			{
+                extend: 'pdf',
+				title: '',
+				messageTop: null,
+				messageBottom: null,
+                exportOptions: {
+                    columns: ':visible',
+                }
+            },
+			{
+                extend: 'print',
+				title: '',
+				messageTop: null,
+				messageBottom: null,
+                autoPrint: true,
+                text: 'Print',
+                exportOptions: 
+				{
+                    columns: [ ':visible' ],
+					rows: function ( idx, data, node ) 
+					{
+						var dt = new $.fn.dataTable.Api('#example' );
+						var selected = dt.rows( { selected: true } ).indexes().toArray();
+					
+						if( selected.length === 0 || $.inArray(idx, selected) !== -1)
+						return true;
+				
+	
+						return false;
+					},
+				}
+            },
+			'colvis'
+        ]
+        
+
+    } );
+
+
+
+var  DT1 = $('#example').DataTable();
+
+$(".selectAll").on( "click", function(e) {
+
+    if ($(this).is( ":checked" )) {   
+		DT1.rows({ page: 'current' }).select();    
+    } else {
+		DT1.rows({ page: 'current' }).deselect();
+    }
+
+});
+
+} );
+
+
+</script>
+<!-- for excel like filter 
+<style>
+/* Styles for the drop-down. Feel free to change the styles to suit your website. :-) */
+
+.cb-dropdown-wrap {
+  max-height: 80px; /* At most, around 3/4 visible items. */
+  position: relative;
+  height: 19px;
+
+}
+
+.cb-dropdown,
+.cb-dropdown li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+}
+
+.cb-dropdown {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #888;
+
+}
+
+/* For selected filter. */
+.active .cb-dropdown {
+  background: pink;
+
+}
+
+.cb-dropdown-wrap:checked .cb-dropdown {
+  
+  height: 80px;
+  overflow: auto;
+  transition: 0.2s height ease-in-out;
+
+}
+
+/* For selected items. */
+.cb-dropdown li.active {
+  background: #ff0;
+}
+
+.cb-dropdown li label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  line-height: 19px; /* Match height of .cb-dropdown-wrap */
+}
+
+.cb-dropdown li label > input {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 16px;
+}
+
+.cb-dropdown li label > span {
+  display: block;
+  margin-left: 3px;
+  margin-right: 20px; /* At least, width of the checkbox. */
+  font-family: sans-serif;
+  font-size: 0.8em;
+  font-weight: normal;
+  text-align: left;
+}
+
+/* This fixes the vertical aligning of the sorting icon. */
+table.dataTable thead .sorting,
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting_asc_disabled,
+table.dataTable thead .sorting_desc_disabled {
+  background-position: 100% 10px;
+}
+</style>-->
+
+
+<iframe id="txtArea1" style="display:none"></iframe>
+
+<table id="example" class="display" style="width:100%">
+         <thead>
+
+            <tr>
+                <th style="text-align:center;">  <input type="checkbox" class="selectAll " name="selectAll"  value="all" >  </th>
+                <th  index=1>Name  <div class="filter"></div> </th>
+                <th index=2>Position  <div class="filter"></div> </th>
+                <th  index=3>Office  <div class="filter"></div> </th>
+                <th index=4>Age  <div class="filter"></div> </th>
+                <th  index=5>Salary  <div class="filter"></div> </th>
+            </tr>
+
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td>Tiger Nixon </td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>$320,800</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>$170,750</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Ashton Cox</td>
+                <td>Junior Technical Author</td>
+                <td>San Francisco</td>
+                <td>66</td>
+                <td>$86,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Cedric Kelly</td>
+                <td>Senior Javascript Developer</td>
+                <td>Edinburgh</td>
+                <td>22</td>
+                <td>$433,060</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Airi Satou</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>33</td>
+                <td>$162,700</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Brielle Williamson</td>
+                <td>Integration Specialist</td>
+                <td>New York</td>
+                <td>61</td>
+                <td>$372,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Herrod Chandler</td>
+                <td>Sales Assistant</td>
+                <td>San Francisco</td>
+                <td>59</td>
+                <td>$137,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Rhona Davidson</td>
+                <td>Integration Specialist</td>
+                <td>Tokyo</td>
+                <td>55</td>
+                <td>$327,900</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Colleen Hurst</td>
+                <td>Javascript Developer</td>
+                <td>San Francisco</td>
+                <td>39</td>
+                <td>$205,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Sonya Frost</td>
+                <td>Software Engineer</td>
+                <td>Edinburgh</td>
+                <td>23</td>
+                <td>$103,600</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Jena Gaines</td>
+                <td>Office Manager</td>
+                <td>London</td>
+                <td>30</td>
+                <td>$90,560</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Quinn Flynn</td>
+                <td>Support Lead</td>
+                <td>Edinburgh</td>
+                <td>22</td>
+                <td>$342,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Charde Marshall</td>
+                <td>Regional Director</td>
+                <td>San Francisco</td>
+                <td>36</td>
+                <td>$470,600</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Haley Kennedy</td>
+                <td>Senior Marketing Designer</td>
+                <td>London</td>
+                <td>43</td>
+                <td>$313,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Tatyana Fitzpatrick</td>
+                <td>Regional Director</td>
+                <td>London</td>
+                <td>19</td>
+                <td>$385,750</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Michael Silva</td>
+                <td>Marketing Designer</td>
+                <td>London</td>
+                <td>66</td>
+                <td>$198,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Paul Byrd</td>
+                <td>Chief Financial Officer (CFO)</td>
+                <td>New York</td>
+                <td>64</td>
+                <td>$725,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Gloria Little</td>
+                <td>Systems Administrator</td>
+                <td>New York</td>
+                <td>59</td>
+                <td>$237,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Bradley Greer</td>
+                <td>Software Engineer</td>
+                <td>London</td>
+                <td>41</td>
+                <td>$132,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Dai Rios</td>
+                <td>Personnel Lead</td>
+                <td>Edinburgh</td>
+                <td>35</td>
+                <td>$217,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Jenette Caldwell</td>
+                <td>Development Lead</td>
+                <td>New York</td>
+                <td>30</td>
+                <td>$345,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Yuri Berry</td>
+                <td>Chief Marketing Officer (CMO)</td>
+                <td>New York</td>
+                <td>40</td>
+                <td>$675,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Caesar Vance</td>
+                <td>Pre-Sales Support</td>
+                <td>New York</td>
+                <td>21</td>
+                <td>$106,450</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Doris Wilder</td>
+                <td>Sales Assistant</td>
+                <td>Sydney</td>
+                <td>23</td>
+                <td>$85,600</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Angelica Ramos</td>
+                <td>Chief Executive Officer (CEO)</td>
+                <td>London</td>
+                <td>47</td>
+                <td>$1,200,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Gavin Joyce</td>
+                <td>Developer</td>
+                <td>Edinburgh</td>
+                <td>42</td>
+                <td>$92,575</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Jennifer Chang</td>
+                <td>Regional Director</td>
+                <td>Singapore</td>
+                <td>28</td>
+                <td>$357,650</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Brenden Wagner</td>
+                <td>Software Engineer</td>
+                <td>San Francisco</td>
+                <td>28</td>
+                <td>$206,850</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Fiona Green</td>
+                <td>Chief Operating Officer (COO)</td>
+                <td>San Francisco</td>
+                <td>48</td>
+                <td>$850,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Shou Itou</td>
+                <td>Regional Marketing</td>
+                <td>Tokyo</td>
+                <td>20</td>
+                <td>$163,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Michelle House</td>
+                <td>Integration Specialist</td>
+                <td>Sydney</td>
+                <td>37</td>
+                <td>$95,400</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Suki Burks</td>
+                <td>Developer</td>
+                <td>London</td>
+                <td>53</td>
+                <td>$114,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Prescott Bartlett</td>
+                <td>Technical Author</td>
+                <td>London</td>
+                <td>27</td>
+                <td>$145,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Gavin Cortez</td>
+                <td>Team Leader</td>
+                <td>San Francisco</td>
+                <td>22</td>
+                <td>$235,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Martena Mccray</td>
+                <td>Post-Sales support</td>
+                <td>Edinburgh</td>
+                <td>46</td>
+                <td>$324,050</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Unity Butler</td>
+                <td>Marketing Designer</td>
+                <td>San Francisco</td>
+                <td>47</td>
+                <td>$85,675</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Howard Hatfield</td>
+                <td>Office Manager</td>
+                <td>San Francisco</td>
+                <td>51</td>
+                <td>$164,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Hope Fuentes</td>
+                <td>Secretary</td>
+                <td>San Francisco</td>
+                <td>41</td>
+                <td>$109,850</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Vivian Harrell</td>
+                <td>Financial Controller</td>
+                <td>San Francisco</td>
+                <td>62</td>
+                <td>$452,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Timothy Mooney</td>
+                <td>Office Manager</td>
+                <td>London</td>
+                <td>37</td>
+                <td>$136,200</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Jackson Bradshaw</td>
+                <td>Director</td>
+                <td>New York</td>
+                <td>65</td>
+                <td>$645,750</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Olivia Liang</td>
+                <td>Support Engineer</td>
+                <td>Singapore</td>
+                <td>64</td>
+                <td>$234,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Bruno Nash</td>
+                <td>Software Engineer</td>
+                <td>London</td>
+                <td>38</td>
+                <td>$163,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Sakura Yamamoto</td>
+                <td>Support Engineer</td>
+                <td>Tokyo</td>
+                <td>37</td>
+                <td>$139,575</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Thor Walton</td>
+                <td>Developer</td>
+                <td>New York</td>
+                <td>61</td>
+                <td>$98,540</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Finn Camacho</td>
+                <td>Support Engineer</td>
+                <td>San Francisco</td>
+                <td>47</td>
+                <td>$87,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Serge Baldwin</td>
+                <td>Data Coordinator</td>
+                <td>Singapore</td>
+                <td>64</td>
+                <td>$138,575</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Zenaida Frank</td>
+                <td>Software Engineer</td>
+                <td>New York</td>
+                <td>63</td>
+                <td>$125,250</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Zorita Serrano</td>
+                <td>Software Engineer</td>
+                <td>San Francisco</td>
+                <td>56</td>
+                <td>$115,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Jennifer Acosta</td>
+                <td>Junior Javascript Developer</td>
+                <td>Edinburgh</td>
+                <td>43</td>
+                <td>$75,650</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Cara Stevens</td>
+                <td>Sales Assistant</td>
+                <td>New York</td>
+                <td>46</td>
+                <td>$145,600</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Hermione Butler</td>
+                <td>Regional Director</td>
+                <td>London</td>
+                <td>47</td>
+                <td>$356,250</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Lael Greer</td>
+                <td>Systems Administrator</td>
+                <td>London</td>
+                <td>21</td>
+                <td>$103,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Jonas Alexander</td>
+                <td>Developer</td>
+                <td>San Francisco</td>
+                <td>30</td>
+                <td>$86,500</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Shad Decker</td>
+                <td>Regional Director</td>
+                <td>Edinburgh</td>
+                <td>51</td>
+                <td>$183,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Michael Bruce</td>
+                <td>Javascript Developer</td>
+                <td>Singapore</td>
+                <td>29</td>
+                <td>$183,000</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Donna Snider</td>
+                <td>Customer Support</td>
+                <td>New York</td>
+                <td>27</td>
+                <td>$112,000</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+</body>

@@ -1,0 +1,23 @@
+{% extends 'share/mainpage.html' %}
+{% load static %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row" style="margin-top: 20%;">
+            <table class="table table-hover table-striped table-bordered">
+                <tr>
+                    <td class="text-center text-success font-weight-bold">بابت بازدید از وب سایت دست نگاره نقش عشق از
+                        شما سپاس گذاریم , به
+                        امید دیدار مجدد
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a class="btn btn-primary btn-block" href="{% url 'dne_sale:loginuser' %}">ورود مجدد</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}

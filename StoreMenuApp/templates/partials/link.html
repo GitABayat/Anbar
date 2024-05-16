@@ -1,0 +1,379 @@
+{% load static %}
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<script>
+    $(document).ready(function () {
+
+        $('.HeadMenu').addClass('col-lg-2 col-2  btn btn-warning shadow fs-5 m-1')
+        $('.a-header').addClass('text-dark fw-bold fs-5 text-center')
+        $('th').addClass('text-dark fw-bold fs-5 text-center')
+        $('input.Txt').addClass('form-control')
+        $('table').addClass('table table-striped table-bordered table-hover table-bg-light text-center text-dark fs-6 fw-bold')
+
+        $('#BtnUpdateSave').click(function () {
+            $('#BtnCreateSave').removeAttr('disabled')
+            $('#BtnUpdateSave, #BtnCancelUpdate').attr('disabled', true)
+            $('#BtnCreateSave').removeAttr('hidden')
+            $('#BtnUpdateSave, #BtnCancelUpdate').attr('hidden', true)
+            $('input.Txt').removeClass('bg-warning')
+            $('.formselect').removeClass('bg-warning radius-10')
+        })
+        $('#BtnCancelUpdate').click(function () {
+            $('.formselect').removeClass('bg-warning radius-10')
+            $('input.Txt').val(0)
+            $('#BtnCreateSave').removeAttr('disabled')
+            $('#BtnUpdateSave, #BtnCancelUpdate').attr('disabled', true)
+            $('#BtnCreateSave').removeAttr('hidden')
+            $('#BtnUpdateSave, #BtnCancelUpdate').attr('hidden', true)
+            $('input.Txt').removeClass('bg-warning')
+            $('select.single-select option[value = -1]').prop('selected', true).change()
+            $('input#Status').removeAttr('checked')
+        })
+
+        $('#SelectAll').click(function () {
+            var checkselected = document.getElementById('SelectAllInput')
+            if (checkselected.checked == true) {
+                table.rows().select();
+            } else {
+                table.rows().deselect();
+            }
+        })
+
+        url = $('#RedirectURL').val()
+        var table = $('.MasterTable').DataTable({
+            lengthChange: true,
+            scrollY: 400,
+            scrollX: 500,
+            scrollCollapse: true,
+            aLengthMenu: [[10, 25, 50, 500], [10, 25, 50, 500]],
+            ordering: true,
+            processing: false,
+            orderCellsTop: true,
+            serverSide: true,
+
+            ajax: {
+                url: '/' + url + '/',
+                dataSrc: "data"
+            },
+            language: {
+                decimal: ',',
+                thousands: '.',
+                "sEmptyTable": "خالی",
+                "sInfo": "نمایش _START_ تا _END_ از _TOTAL_ ردبف",
+                "sInfoEmpty": "نمایش 0 از 0 تا 0 ردیف",
+                "sInfoFiltered": "(انتخاب شده از _MAX_ ردیف)",
+                "sInfoPostFix": "",
+                InfoThousands: ",",
+                "sLengthMenu": "نمایش _MENU_ ردیف",
+                "sLoadingRecords": "درحال بارگزاری",
+                "sProcessing": "درحال پردازش",
+                "sSearch": "جستجو:",
+                "sZeroRecords": "هبچ چیز پیدا نشد",
+                "srow selected": "ردیف های انتخاب شده",
+                "oPaginate": {
+                    "sFirst": "اولین صفحه",
+                    "sLast": "آخرین صفحه",
+                    "sNext": "بعد",
+                    "sPrevious": "قبل"
+                },
+                "oAria": {
+                    "sSortAscending": "سورت بزرگ به کوچک",
+                    "sSortDescending": "سورت کوچک به بزرگ"
+                },
+
+            },
+            columnDefs: [
+                {
+                    targets: 0,
+                    orderable: false,
+                    className: 'select-checkbox'
+                },
+                {
+                    targets: 1,
+                    data: null,
+                    defaultContent: '<a class="BtnEdit" data-toggle="tooltip" data-placement="right" title="ویرایش"><i class="fa fa-edit text-warning"></i></a>&nbsp;&nbsp;<a class="BtnDelete" data-toggle="tooltip" data-placement="right" title="حذف"><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>',
+                },
+            ],
+            select: {
+                style: 'multi',
+                selector: 'tr'
+            },
+            order: [[2, 'desc']],
+            dom: 'Blfrtip',
+            buttons: [
+                'excel', 'print'
+            ],
+            pagingType: 'full_numbers',
+        });
+
+
+        // این دستور بعد از زدن کلید ذخیره اطلاعات را جمع آوری کردن و در دیتابیس ذخیره میکند
+        $('#BtnCreateSave').click(function (event) {
+
+            event.preventDefault();
+
+            var modelname = $('#ModelName').val()
+            var BtnCreateURL = $('#BtnCreateURL').val()
+            var rowid = $('#rowid').val()
+            var SerializersName = $('#SerializersName').val()
+
+            GetName = '***'
+            GetFamily = '***'
+            GetDesc = '***'
+            GetStatus = 'false'
+            GetCustomerGroup = 0
+            GetGoAndSer = 0
+            GetCustomer = 0
+            GetType = 1
+            GetCount = 0
+
+            if (modelname === 'Store' | modelname == 'GoodsAndServices' | modelname == 'CustomersGroupDT') {
+                var GetName = $('input#Name').val()
+                var GetDesc = $('input#Desc').val()
+                var GetStatus = $('input#Status').is(':checked')
+            }
+            else if (modelname == 'Customers') {
+                var GetName = $('input#Name').val()
+                var GetFamily = $('input#Family').val()
+                var GetDesc = $('input#Desc').val()
+                var GetStatus = $('input#Status').is(':checked')
+
+                for (var Gp of document.getElementById("Group").options) {
+                    if (Gp.selected) {
+                        GetCustomerGroup = Gp.value;
+                    }
+                }
+            }
+            else if (modelname == 'Recept') {
+                var GetCount = $('input#Count').val()
+                var GetDesc = $('input#Desc').val()
+
+                for (var Go of document.getElementById("GoAndSer").options) {
+                    if (Go.selected) {
+                        GetGoods = Go.value;
+                    }
+                }
+
+                for (var Cu of document.getElementById("Custom").options) {
+                    if (Cu.selected) {
+                        GetCustomer = Cu.value;
+                    }
+                }
+
+                for (var Ty of document.getElementById("Type").options) {
+                    if (Ty.selected) {
+                        GetType = Ty.value;
+                    }
+                }
+            }
+
+            $.ajax({
+                url: '/' + BtnCreateURL + '/',
+                data: {
+                    'ModelName': modelname,
+                    'SerializersName': SerializersName,
+                    'rowid': rowid,
+                    'Name': GetName,
+                    'Status': GetStatus,
+                    'Desc': GetDesc,
+                    'Group': GetCustomerGroup,
+                    'GoAndSer': GetGoods,
+                    'Custom': GetCustomer,
+                    'Type': GetType,
+                    'Family': GetFamily,
+                    'Count': GetCount,
+
+                    'csrfmiddlewaretoken': "{{ csrf_token }}"
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $('.MasterTable').DataTable().ajax.reload();
+                    $('select.single-select option[value = -1]').prop('selected', true).change()
+                    $('input.Txt').val(0)
+                }
+            })
+
+        })
+
+        // ویرایش
+        // این دستور بعد از زدن کلید ذخیره ویرایش اطلاعات را جمع آوری کردن و در دیتابیس ذخیره میکند
+        $('#BtnUpdateSave').click(function (event) {
+
+            event.preventDefault();
+
+            var modelname = $('#ModelName').val()
+            var BtnUpdateURL = $('#BtnUpdateURL').val()
+            var rowid = $('#rowid').val()
+            var SerializersName = $('#SerializersName').val()
+
+            GetName = '***'
+            GetFamily = '***'
+            GetDesc = '***'
+            GetStatus = 'false'
+            GetCustomerGroup = 0
+            GetGoAndSer = 0
+            GetCustomer = 0
+            GetType = 1
+            GetCount = 0
+
+            if (modelname === 'Store' | modelname == 'GoodsAndServices' | modelname == 'CustomersGroupDT') {
+                var GetName = $('input#Name').val()
+                var GetDesc = $('input#Desc').val()
+                var GetStatus = $('input#Status').is(':checked')
+            }
+            else if (modelname == 'Customers') {
+                var GetName = $('input#Name').val()
+                var GetFamily = $('input#Family').val()
+                var GetDesc = $('input#Desc').val()
+                var GetStatus = $('input#Status').is(':checked')
+
+                for (var Gp of document.getElementById("Group").options) {
+                    if (Gp.selected) {
+                        GetCustomerGroup = Gp.value;
+                    }
+                }
+            }
+            else if (modelname == 'Recept') {
+                var GetCount = $('input#Count').val()
+                var GetDesc = $('input#Desc').val()
+
+                for (var Go of document.getElementById("GoAndSer").options) {
+                    if (Go.selected) {
+                        GetGoods = Go.value;
+                    }
+                }
+
+                for (var Cu of document.getElementById("Custom").options) {
+                    if (Cu.selected) {
+                        GetCustomer = Cu.value;
+                    }
+                }
+
+                for (var Ty of document.getElementById("Type").options) {
+                    if (Ty.selected) {
+                        GetType = Ty.value;
+                    }
+                }
+            }
+
+            $.ajax({
+                url: '/' + BtnUpdateURL + '/',
+                data: {
+                    'ModelName': modelname,
+                    'SerializersName': SerializersName,
+                    'rowid': rowid,
+                    'Name': GetName,
+                    'Status': GetStatus,
+                    'Desc': GetDesc,
+                    'Group': GetCustomerGroup,
+                    'GoAndSer': GetGoods,
+                    'Custom': GetCustomer,
+                    'Type': GetType,
+                    'Family': GetFamily,
+                    'Count': GetCount,
+
+                    'csrfmiddlewaretoken': "{{ csrf_token }}"
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $('.MasterTable').DataTable().ajax.reload();
+                    $('select.single-select option[value = -1]').prop('selected', true).change()
+                    $('input.Txt').val(0)
+                }
+            })
+
+        })
+
+        // این فانکشن بعد از زدن کلید ویرایش اجرا شده و اطلاعات ردیف انتخابی را در فیلد های مربوطه نمایش می دهد
+        $('.MasterTable').click(function () {
+            $('.BtnEdit').click(function () {
+                $(".MasterTable .selected td:first-child").each(function () {
+                    var row = $(this).closest("tr")[0];
+                    if (row.cells[2].innerHTML) {
+                        var rowid = + row.cells[2].innerHTML
+                    }
+                    document.getElementById('rowid').value = rowid
+
+                    modelname = document.getElementById('ModelName').value
+                    RedirectURL = document.getElementById('RedirectURL').value
+
+                    $.ajax({
+                        url: '{% url "StoreMenuApp:FindUpdateIndo" %}',
+                        data: {
+                            'rowid': rowid,
+                            'ModelName': modelname,
+                            'csrfmiddlewaretoken': "{{ csrf_token }}"
+                        },
+                        type: "POST",
+                        dataType: 'json',
+                        success: function (data) {
+
+                            $('#BtnCreateSave').attr('disabled', true)
+                            $('#BtnCreateSave').attr('hidden', true)
+                            $('#BtnUpdateSave, #BtnCancelUpdate').removeAttr('disabled')
+                            $('#BtnUpdateSave, #BtnCancelUpdate').removeAttr('hidden')
+                            $('input.Txt').addClass('bg-warning')
+                            $('.formselect').addClass('bg-warning radius-10')
+
+                            if (modelname === 'Store' | modelname == 'GoodsAndServices') {
+                                $('input#Name').val(data.Name)
+                                $('input#Desc').val(data.Desc)
+                                $('input#Status').attr('checked', data.Status)
+                            }
+                            else if (modelname == 'Customers') {
+                                $('input#Name').val(data.Name)
+                                $('input#Family').val(data.Family)
+                                $('input#Desc').val(data.Desc)
+                                $('input#Status').attr('checked', data.Status)
+                                $('select#Group option[value = ' + data.Group + ']').prop('selected', true).change()
+                            }
+                            else if (modelname == 'Recept') {
+                                $('select#GoAndSer option[value = ' + data.GoAndSer + ']').prop('selected', true).change()
+                                $('select#Custom option[value = ' + data.Custom + ']').prop('selected', true).change()
+                                $('select#Type option[value = ' + data.Type + ']').prop('selected', true).change()
+                                $('input#Count').val(data.Count)
+                                $('input#Desc').val(data.Desc)
+                            }
+                        }
+                    })
+                })
+            })
+        })
+
+        // فانکشن مربوط به حذف
+        $('.MasterTable').click(function () {
+            $('.BtnDelete').click(function () {
+                $(".MasterTable .selected td:first-child").each(function () {
+                    var row = $(this).closest("tr")[0];
+                    if (row.cells[2].innerHTML) {
+                        var rowid = + row.cells[2].innerHTML
+                    }
+                    $('#DeleteConfirm').modal('show');
+                    $('#DeleteConfirmContent').html('آیا با حذف رکورها موافق هستید ?')
+                    $('#DeleteConfirmIsOK').click(function () {
+                        var model = document.getElementById('ModelName').value
+                        $.ajax({
+                            url: '{% url "StoreMenuApp:Delete" %}',
+                            data: {
+                                'rowid': rowid,
+                                'ModelName': model,
+                                'csrfmiddlewaretoken': "{{ csrf_token }}"
+                            },
+                            type: "POST",
+                            dataType: 'json',
+                            success: function (data) {
+                                $('#reportmodal').modal('show')
+                                $('#reportmodalcontentText').html(data.html)
+                                $('#reportmodalcontent').html('عملیات حذف بدون خطا انجام گردید .')
+                                $('.MasterTable').DataTable().ajax.reload();
+                            }
+                        })
+                    })
+                })
+            })
+        })
+    })
+</script>
