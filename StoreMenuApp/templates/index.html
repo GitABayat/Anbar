@@ -42,6 +42,16 @@
                                     <br />
                                 </div>
                                 <div class="row mb-2 p-1 formselect">
+                                    <label for="Store">انبار</label>
+                                    <select class="single-select" id="Store" name="Sto">
+                                        <option value="-1">------</option>
+                                        {% for st in Store %}
+                                        <option value="{{ st.id }}">{{ st.Name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <br />
+                                </div>
+                                <div class="row mb-2 p-1 formselect">
                                     <label for="GoAndSer">کالا</label>
                                     <select class="single-select" id="GoAndSer" name="GoAndSer">
                                         <option value="-1">------</option>
@@ -104,6 +114,7 @@
                                 <th>کلیدها</th>
                                 <th>کد</th>
                                 <th>نوع</th>
+                                <th>انبار</th>
                                 <th>کالا</th>
                                 <th>تحویل گیرنده</th>
                                 <th>تعداد</th>

@@ -1,0 +1,75 @@
+{% extends 'share/CmsMainpage.html' %}
+{% load static %}
+
+{% block title %}
+{{ super }} گزارش موجودی
+{% endblock %}
+
+
+{% block body %}
+
+{% include 'partials/NavHeader.html' %}
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-lg-4 float-start">
+            <p class="p-2 fs-5 fw-bold text-dark text-center">فیلتر کالا و انبار</p>
+            <hr />
+            <div class="card">
+                <div class="card-body">
+                    <div class="container">
+                        <div class="mt-1 w-100 h-100" id="StoresList">
+                            <lable for="findgood">جستجوی کالا</lable>
+                            <input id="findgood" class="form-control bg-warning" type="search" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="card">
+                <div class="card-body">
+                    <div class="container">
+                        <div class="mt-1 storefind" id="StoresList" style="overflow: scroll; height: 200px;">
+                            <p><input class="checkbox selectedstore" type="checkbox" value="0">&nbsp;&nbsp;همه انبار ها</p>
+                            {% for sl in Store %}
+                            <p><input class="checkbox selectedstore" type="checkbox" value="{{sl.id}}">&nbsp;&nbsp;{{ sl.Name }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 float-end">
+            <p class="p-2 fs-5 fw-bold text-dark text-center"> گزارش رسید ها</p>
+
+            <hr />
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-hover table-strip table-bordered">
+                        <thead>
+                            <tr>
+                                <th>کالا</th>
+                                <th>انبار</th>
+                                <th>تعداد</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="SearchTbody">
+                            {% for m in report %}
+                            <tr>
+                                <td>{{ m.0 }}</td>
+                                <td>{{ m.1 }}</td>
+                                <td>{{ m.2 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div><!-- End .col-lg-9 -->
+            </div>
+        </div>
+    </div>
+</div>
+<a id="BtnEdit" data-toggle="tooltip" data-placement="right" title="ویرایش"></a>
+{% include 'partials/reportmodal.html' %}
+{% endblock %}

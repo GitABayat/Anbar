@@ -55,7 +55,7 @@ class Crud:
         modelname = get_model_class(self.POST['ModelName'])
         ModelStrName = self.POST['ModelName']
 
-        if ModelStrName == 'Store' or ModelStrName == 'GoodsAndServices':
+        if ModelStrName == 'Store' or ModelStrName == 'GoodsAndServices' or ModelStrName == 'CustomersGroup':
             UpdateResult = modelname.objects.filter(id=int(self.POST['rowid'])).values_list('Name', 'Status', 'Desc')[0]
             data = {
                 'Name': UpdateResult[0],
@@ -76,13 +76,14 @@ class Crud:
             return JsonResponse(data)
         
         elif ModelStrName == 'Recept':
-            UpdateResult = modelname.objects.filter(id=int(self.POST['rowid'])).values_list('GoAndSer', 'Custom', 'Type', 'Desc', 'Count')[0]
+            UpdateResult = modelname.objects.filter(id=int(self.POST['rowid'])).values_list('GoAndSer', 'Custom', 'Type', 'Desc', 'Count', 'Sto')[0]
             data = {
                 'GoAndSer': UpdateResult[0],
                 'Custom': UpdateResult[1],
                 'Type': UpdateResult[2],
                 'Desc': str(UpdateResult[3]),
                 'Count': UpdateResult[4],
+                'Sto': UpdateResult[5],
             }
             return JsonResponse(data)
     
@@ -125,7 +126,7 @@ class Crud:
 class StoreLV(ListView):
     model = Store
     context_object_name = 'StoreList'
-    template_name = 'StoreLV.html'
+    template_name = 'MasterReport.html'
     queryset = Store.objects.all()
 
     def get_context_data(self, **kwargs):
@@ -133,6 +134,80 @@ class StoreLV(ListView):
         context['Store'] = Store.objects.all()
         return context
 
+class MasterReport(ListView):
+    model = Store
+    context_object_name = 'StoreListreport'
+    template_name = 'MasterReport.html'
+    queryset = Store.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(MasterReport, self).get_context_data(**kwargs)
+        context['Store'] = Store.objects.all()
+        GsReport = Recept.objects.filter(id__gt=0).values('GoAndSer', 'Sto').annotate(sum=Sum('Count')).order_by('GoAndSer')
+        resultlist = []
+        for a in GsReport:
+            if len(list(a.values()))>0:
+                resultlist.append((GoodsAndServices.objects.filter(id=list(a.values())[0]).values('Name')[0]['Name'],Store.objects.filter(id=list(a.values())[1]).values('Name')[0]['Name'], list(a.values())[2]))
+        context['report'] = resultlist
+        return context
+
+
+class Search:
+    def ReportFilter(self):
+        serchithem = self.POST['serchithem']
+        Gid = GoodsAndServices.objects.filter(Name__icontains = serchithem).values_list('id', flat=True)
+        findresult = Recept.objects.filter(GoAndSer__in = Gid).values('GoAndSer', 'Sto').annotate(sum=Sum('Count')).order_by('GoAndSer')
+
+        resultlist = []
+        for a in findresult:
+            if len(list(a.values()))>0:
+                resultlist.append(
+                    f'''
+                        <tr>
+                            <td>{GoodsAndServices.objects.filter(id=list(a.values())[0]).values('Name')[0]['Name']}</td>
+                            <td>{Store.objects.filter(id=list(a.values())[1]).values('Name')[0]['Name']}</td>
+                            <td>{list(a.values())[2]}</td>
+                        </tr>
+                    '''
+                )
+
+        data = {
+            'resultlist': resultlist
+        }
+
+        return JsonResponse(data)
+    
+
+    def ReportFilterByStoreID(self):
+        serchithem = '0'
+        if len(self.POST)> 1:
+            serchithem = list(self.POST['serchithem[]'])
+
+        findresult = ['0','0','0']
+        if serchithem == '0':
+            findresult = Recept.objects.filter(id__gt = 0).values('GoAndSer', 'Sto').annotate(sum=Sum('Count')).order_by('GoAndSer')
+        else:
+            findresult = Recept.objects.filter(Sto__in = serchithem).values('GoAndSer', 'Sto').annotate(sum=Sum('Count')).order_by('GoAndSer')
+
+        resultlist = []
+        for a in findresult:
+            if len(list(a.values()))>0:
+                resultlist.append(
+                    f'''
+                        <tr>
+                            <td>{GoodsAndServices.objects.filter(id=list(a.values())[0]).values('Name')[0]['Name']}</td>
+                            <td>{Store.objects.filter(id=list(a.values())[1]).values('Name')[0]['Name']}</td>
+                            <td>{list(a.values())[2]}</td>
+                        </tr>
+                    '''
+                )
+
+        data = {
+            'resultlist': resultlist
+        }
+
+        return JsonResponse(data)
+        
 
 class StoreDT(BaseDatatableView):
     model = Store
@@ -248,13 +323,14 @@ class ReceptLV(ListView):
         context = super(ReceptLV, self).get_context_data(**kwargs)
         context['GoAndSer'] = GoodsAndServices.objects.all()
         context['Custom'] = Customers.objects.all()
+        context['Store'] = Store.objects.all()
 
         return context
 
 
 class ReceptDT(BaseDatatableView):
     model = Recept
-    columns = ['', '', 'id', 'Type','GoAndSer', 'Custom', 'Count',  'Desc']
+    columns = ['', '', 'id', 'Type', 'Sto', 'GoAndSer', 'Custom', 'Count',  'Desc']
 
     def render_column(self, row, column):
         return super(ReceptDT, self).render_column(row, column)
@@ -266,3 +342,6 @@ class ReceptDT(BaseDatatableView):
 
         qs = qs.filter(Q(id__gt = 0))
         return qs
+    
+
+## بخش مربوط به گزارش ها

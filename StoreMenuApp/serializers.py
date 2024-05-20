@@ -43,6 +43,6 @@ class CustomersSerializers(serializers.ModelSerializer):
 class ReceptSerializers(serializers.ModelSerializer):
     class Meta:
         model = Recept
-        fields = ['GoAndSer', 'Custom', 'Count', 'Type', 'Desc']
+        fields = ['Sto', 'GoAndSer', 'Custom', 'Count', 'Type', 'Desc']
 
               

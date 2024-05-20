@@ -1,10 +1,27 @@
-
+{% load static %}
 <div class="container-fluid mt-2 sticky-top bg-light shadow">
     <div class="row">
-        <div class="HeadMenu"><a class="a-header" href="{% url 'StoreMenuApp:ReceptLV' %}">رسید/حواله</a></div>
-        <div class="HeadMenu"><a class="a-header" href="{% url 'StoreMenuApp:StoreLV' %}"> انبار</a></div>
-        <div class="HeadMenu"><a class="a-header" href="{% url 'StoreMenuApp:GoodsAndServicesLV' %}"> کالا</a></div>
-        <div class="HeadMenu"><a class="a-header" href="{% url 'StoreMenuApp:CustomersLV' %}"> مشتری</a></div>
+        <div id="masterhm1" class="HeadMenu ">
+            <div id="hm1" ><a class="a-header">اطلاعات پایه</a></div>
+            <ul id="hm1ul" hidden>
+                <li><a href="{% url 'StoreMenuApp:StoreLV' %}"> انبار</a></li>
+                <li><a href="{% url 'StoreMenuApp:GoodsAndServicesLV' %}"> کالا</a></li>
+                <li><a href="{% url 'StoreMenuApp:CustomersGroupLV' %}"> گروه اشخاص</a></li>
+                <li><a href="{% url 'StoreMenuApp:CustomersLV' %}"> اشخاص</a></li>
+            </ul>
+        </div>
+        <div id="masterhm2" class="HeadMenu">
+            <div id="hm2" ><a class="a-header">فرم های عملیاتی</a></div>
+            <ul id="hm2ul" hidden>
+                <li><a class="a-header" href="{% url 'StoreMenuApp:ReceptLV' %}">رسید/حواله</a></li>
+            </ul>
+        </div>
+        <div id="masterhm3" class="HeadMenu">
+            <div id="hm3" ><a class="a-header">گزارش ها</a></div>
+            <ul id="hm3ul" hidden>
+                <li><a href="{% url 'StoreMenuApp:MasterReport' %}"> گزارش موجودی</a></li>
+            </ul>
+        </div>
     </div>
-    <br/>
+    <br />
 </div>

@@ -99,7 +99,7 @@ class Recept(models.Model):
         (0, 'رسید'),
         (1, 'حواله'),
     ]
-  
+    Sto = models.ForeignKey(Store, on_delete=models.PROTECT, related_name='Store', null=False, blank=False)
     GoAndSer = models.ForeignKey(GoodsAndServices, on_delete=models.PROTECT, related_name='GoASe', null=False, blank=False)
     Custom = models.ForeignKey(Customers, on_delete=models.PROTECT, related_name='Customer', null=False, blank=False)
     Count = models.IntegerField(default=0, blank=False, null=False, verbose_name=_('مبلغ'))

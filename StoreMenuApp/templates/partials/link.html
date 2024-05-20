@@ -5,11 +5,48 @@
 <script>
     $(document).ready(function () {
 
-        $('.HeadMenu').addClass('col-lg-2 col-2  btn btn-warning shadow fs-5 m-1')
+        //بخش مربوط به دستور های تک خطی و عمومی
+        $('.HeadMenu').addClass('col-lg-2 col-3 btn fs-5 m-1')
         $('.a-header').addClass('text-dark fw-bold fs-5 text-center')
         $('th').addClass('text-dark fw-bold fs-5 text-center')
         $('input.Txt').addClass('form-control')
+        $('#hm1, #hm2, #hm3').addClass('shadow border border-left radius-10 p-2')
         $('table').addClass('table table-striped table-bordered table-hover table-bg-light text-center text-dark fs-6 fw-bold')
+        $('ul li').addClass('d-flex justify-content-center')
+        $('li a').addClass('col-12 fs-6 fw-bold text-dark bg-light text-decoration-none p-2 border radius-10 m-1')
+        $('div.storefind p').addClass('text-dark p-1 m-1 border radius-10')
+
+
+        $('li a').mouseenter(function () {
+            $(this).removeClass('bg-light').addClass('bg-warning')
+            $(this).mouseleave(function () {
+                $(this).removeClass('bg-warning').addClass('bg-light')
+            })
+        })
+        $('#hm1').mouseenter(function () {
+            $('#hm1ul').removeAttr('hidden').addClass('bg-light')
+
+        })
+        $('#masterhm1').mouseleave(function () {
+            $('#hm1ul').attr('hidden', true).removeClass('bg-light')
+        })
+
+        $('#hm2').mouseenter(function () {
+            $('#hm2ul').removeAttr('hidden').addClass('bg-light')
+
+        })
+        $('#masterhm2').mouseleave(function () {
+            $('#hm2ul').attr('hidden', true).removeClass('bg-light')
+        })
+
+        $('#hm3').mouseenter(function () {
+            $('#hm3ul').removeAttr('hidden').addClass('bg-light')
+
+        })
+        $('#masterhm3').mouseleave(function () {
+            $('#hm3ul').attr('hidden', true).removeClass('bg-light')
+        })
+
 
         $('#BtnUpdateSave').click(function () {
             $('#BtnCreateSave').removeAttr('disabled')
@@ -31,6 +68,10 @@
             $('input#Status').removeAttr('checked')
         })
 
+        //بخش مربوط به دستور های گزارش موجودیکه زیر گروه دستور های تک خطی می باشد
+
+
+        // بخش مربوط به اطلاعات ساختاری جدول Datatable
         $('#SelectAll').click(function () {
             var checkselected = document.getElementById('SelectAllInput')
             if (checkselected.checked == true) {
@@ -127,8 +168,10 @@
             GetCustomer = 0
             GetType = 1
             GetCount = 0
+            GetSto = 1
+            GetGoods = 1
 
-            if (modelname === 'Store' | modelname == 'GoodsAndServices' | modelname == 'CustomersGroupDT') {
+            if (modelname === 'Store' | modelname == 'GoodsAndServices' | modelname == 'CustomersGroup') {
                 var GetName = $('input#Name').val()
                 var GetDesc = $('input#Desc').val()
                 var GetStatus = $('input#Status').is(':checked')
@@ -152,6 +195,11 @@
                 for (var Go of document.getElementById("GoAndSer").options) {
                     if (Go.selected) {
                         GetGoods = Go.value;
+                    }
+                }
+                for (var St of document.getElementById("Store").options) {
+                    if (St.selected) {
+                        GetSto = St.value;
                     }
                 }
 
@@ -183,6 +231,7 @@
                     'Type': GetType,
                     'Family': GetFamily,
                     'Count': GetCount,
+                    'Sto': GetSto,
 
                     'csrfmiddlewaretoken': "{{ csrf_token }}"
                 },
@@ -217,8 +266,9 @@
             GetCustomer = 0
             GetType = 1
             GetCount = 0
+            GetSto = 1
 
-            if (modelname === 'Store' | modelname == 'GoodsAndServices' | modelname == 'CustomersGroupDT') {
+            if (modelname === 'Store' | modelname == 'GoodsAndServices' | modelname == 'CustomersGroup') {
                 var GetName = $('input#Name').val()
                 var GetDesc = $('input#Desc').val()
                 var GetStatus = $('input#Status').is(':checked')
@@ -244,7 +294,11 @@
                         GetGoods = Go.value;
                     }
                 }
-
+                for (var St of document.getElementById("Store").options) {
+                    if (St.selected) {
+                        GetSto = St.value;
+                    }
+                }
                 for (var Cu of document.getElementById("Custom").options) {
                     if (Cu.selected) {
                         GetCustomer = Cu.value;
@@ -273,6 +327,7 @@
                     'Type': GetType,
                     'Family': GetFamily,
                     'Count': GetCount,
+                    'Sto': GetSto,
 
                     'csrfmiddlewaretoken': "{{ csrf_token }}"
                 },
@@ -318,7 +373,7 @@
                             $('input.Txt').addClass('bg-warning')
                             $('.formselect').addClass('bg-warning radius-10')
 
-                            if (modelname === 'Store' | modelname == 'GoodsAndServices') {
+                            if (modelname === 'Store' | modelname == 'GoodsAndServices' | modelname == 'CustomersGroup') {
                                 $('input#Name').val(data.Name)
                                 $('input#Desc').val(data.Desc)
                                 $('input#Status').attr('checked', data.Status)
@@ -334,6 +389,7 @@
                                 $('select#GoAndSer option[value = ' + data.GoAndSer + ']').prop('selected', true).change()
                                 $('select#Custom option[value = ' + data.Custom + ']').prop('selected', true).change()
                                 $('select#Type option[value = ' + data.Type + ']').prop('selected', true).change()
+                                $('select#Store option[value = ' + data.Sto + ']').prop('selected', true).change()
                                 $('input#Count').val(data.Count)
                                 $('input#Desc').val(data.Desc)
                             }
@@ -373,6 +429,48 @@
                         })
                     })
                 })
+            })
+        })
+
+
+        $('#findgood').keyup(function () {
+            serchithem = $(this).val()
+            $.ajax({
+                url: '{% url "StoreMenuApp:ReportFilter" %}',
+                data: {
+                    'serchithem': serchithem,
+                    'csrfmiddlewaretoken': "{{ csrf_token }}"
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $('#SearchTbody').empty()
+                    $('#SearchTbody').html(data.resultlist)
+                }
+            })
+        })
+
+        $('div#StoresList').click(function () {
+
+            var serchithem = []
+            for (var St of $('.selectedstore')) {
+                if (St.checked) {
+                    serchithem.push(serchithem + [St.value])
+                }
+            }
+
+            $.ajax({
+                url: '{% url "StoreMenuApp:ReportFilterByStoreID" %}',
+                data: {
+                    'serchithem': serchithem,
+                    'csrfmiddlewaretoken': "{{ csrf_token }}"
+                },
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+                    $('#SearchTbody').empty()
+                    $('#SearchTbody').html(data.resultlist)
+                }
             })
         })
     })

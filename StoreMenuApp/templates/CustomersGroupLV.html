@@ -2,73 +2,102 @@
 {% load static %}
 
 {% block title %}
-{{ super }} گزارش بیمار ها
+{{ super }} گزارش گروه تحویل گیرنده ها
 {% endblock %}
 
+
 {% block body %}
-{% if user.is_authenticated and user.is_staff and user.is_superuser %}
-{% include 'partials/dashboard_header.html' %}
-{% include 'partials/side_menu_dashboard.html' %}
-<div class="wrapper">
-    <div class="page-wrapper">
-        <div class="page-content">
-            <div class="p-2 fw-bold" style="background-color:lightgray ; border-radius: 5px;">
-                <span><a href="">خانه</a></span> / <span>مدیریت لیست بیمار ها</span>
+<input id="ModelName" type="hidden" value="CustomersGroup">
+<input id="URLDetail" type="hidden" value="">
+<input id="RedirectURL" type="hidden" value="CustomersGroupDT">
+<input id="ModelDetailName" type="hidden" value="">
+<input id="SerializersName" type="hidden" value="CustomersGroupSerializers">
+<input id="CreateKeyID" type="hidden" value="CreateForm">
+<input id="UpdateKeyID" type="hidden" value="0">
+<input id="rowid" type="hidden" value="0">
+<input id="UpdateRorwID" type="hidden" value="0">
+<input id="BtnCreateURL" type="hidden" value="Create">
+<input id="BtnUpdateURL" type="hidden" value="Update">
+<br />
+{% include 'partials/NavHeader.html' %}
+<div class="container-floid mt-5">
+    <div class="row">
+        <div class="col-lg-4 float-start">
+            <p class="p-2 fs-5 fw-bold text-dark text-center">فرم ایجاد و ویرایش گروه تحویل گیرنده ها</p>
+            <hr />
+            <div class="card">
+                <div class="card-body">
+                    <form id="MasterForm" enctype="multipart/form-data" role="form" method="post" autocomplete="off">
+                        {% csrf_token %}
+                        <div class="container">
+                            <div class="row">
+
+                                <div class="row mb-2">
+                                    <label for="Name">نام</label>
+                                    <input class="Txt" id="Name" name="Name" type="text" value="">
+                                </div>
+                                <div class="row mb-2">
+                                    <label for="Desc">شرح</label>
+                                    <input class="Txt" id="Desc" name="Desc" type="text" value="">
+                                </div>
+                                
+
+                                <div class="row mb-2">
+                                    <div class="col-1">
+                                        <input id="Status" name="Status" type="checkbox" value="">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="Status">غیر فعال</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-12 p-2">
+                                <button id="BtnCreateSave" class="btn btn-success col-12" type="button">ذخیره</button>
+                            </div>
+                            <div class="col-6 float-start p-2">
+                                <button hidden disabled id="BtnUpdateSave" class="btn btn-warning col-12"
+                                    type="button">ذخیره ویرایش</button>
+                            </div>
+                            <div class="col-6 float-end p-2">
+                                <button hidden disabled id="BtnCancelUpdate" class="btn btn-danger col-12"
+                                    type="button">لغو ویرایش</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            
-            <div class="row ">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+        </div>
 
-                    <input id="ModelName"       type="hidden" value="CustomersList">
-                    <input id="idname"          type="hidden" value="MasterTable">
-                    <input id="URL"             type="hidden" value="CustomersListDT">
-                    <input id="URLDetail"       type="hidden" value="">
-                    <input id="RedirectURL"     type="hidden" value="CustomersList">
-                    <input id="ModelDetailName" type="hidden" value="">
-                    <input id="SerializersName" type="hidden" value="CustomersListSerializers">
-                    <input id="CreateKeyID"     type="hidden" value="CustomersListC">
-                    <input id="UpdateKeyID"     type="hidden" value="CustomersListU">
-                    <input id="rowid"           type="hidden" value="0">
-                    <input id="UpdateRorwID"    type="hidden" value="0">
-                    <input id="BtnCreateURL"    type="hidden" value="Create">
-                    <input id="BtnUpdateURL"    type="hidden" value="Update">
+        <div class="col-lg-8 float-end">
+            <p class="p-2 fs-5 fw-bold text-dark text-center"> گزارش گروه تحویل گیرنده ها</p>
 
-                    {% include 'partials/MasterKeys.html' %}
-                    <table class=" col-12 border-bottom" style="margin-bottom: 10px;">
-                        <tr>
-                            <td class="container"
-                                style="text-align: center; padding: 1%; font-size: larger; font-weight: bolder;">
-                                گزارش بیمار ها
-                            </td>
-                        </tr>
+            <hr />
+            <div class="card">
+                <div class="card-body">
+                    <table class="MasterTable" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th id="SelectAll"><input id="SelectAllInput" type="checkbox" class="select-checkbox">
+                                </th>
+                                <th>کلیدها</th>
+                                <th>کد</th>
+                                <th>نام</th>
+                                <th>وضعیت</th>
+                                <th>شرح</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
                     </table>
-                    <div class="card">
-                        <div class="card-body">
-                            <table id="MasterTable" class="display" style="width: 100%;">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" id="SelectAll"><input id="SelectAllInput"
-                                                type="checkbox" class="select-checkbox"></th>
-                                        <th class="text-center">کلیدها</th>
-                                        <th class="text-center">کد</th>
-                                        <th class="text-center">کد ملی</th>
-                                        <th class="text-center">نام</th>
-                                        <th class="text-center">فامیلی</th>
-                                        <th class="text-center">نوع بیمه</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                </div><!-- End .col-lg-9 -->
+            </div>
+        </div>
+    </div>
+</div>
 
-                                </tbody>
-                            </table>
-                        </div><!-- End .col-lg-9 -->
-                    </div><!-- End .row -->
-                </div><!-- End .container -->
-            </div><!-- End .dashboard -->
-        </div><!-- End .page-content -->
-    </div><!-- End .main -->
-</div><!-- End .page-wrapper -->
 {% include 'partials/reportmodal.html' %}
-{% include 'CustomersList_CU.html' %}
-{% endif %}
 {% endblock %}

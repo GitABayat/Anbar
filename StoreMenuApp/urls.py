@@ -10,6 +10,12 @@ urlpatterns = [
     path('Update/', views.Crud.Update, name='Update'),
     path('Delete/', views.Crud.Delete, name='Delete'),
 
+    path('ReportFilter/', views.Search.ReportFilter, name='ReportFilter'),
+    path('ReportFilterByStoreID/', views.Search.ReportFilterByStoreID, name='ReportFilterByStoreID'),
+
+    #بخش مربوط به آدرس های گزارش ها
+    path('MasterReport/', views.MasterReport.as_view(), name='MasterReport'),
+
     # در این بخش آدرس های مروبط به کلاس های DataTable های قرار میگیرد
     # 1-Store
     path('StoreLV/', views.StoreLV.as_view(), name='StoreLV'),
