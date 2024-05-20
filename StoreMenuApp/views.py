@@ -16,25 +16,31 @@ locale.setlocale(locale.LC_ALL, '')
 
 # فانکشن های تبدیل متن به کلاس.
 ## در حالت نرمال جهت کنترل سطح دسترسی و لاگین بودن از درکوریتور های : @login_required('/'), @permission_required() استفاده می شود .
-def str_to_class(name):
-    classname = getattr(sys.modules[__name__], name)
-    return classname
+class Convertors:
+    def __init__(self, modelname, serilaizerzname):
+        self.modelname = modelname
+        self.serilaizerzname = serilaizerzname
+
+    def str_to_class(self):
+        classname = getattr(sys.modules[__name__], self.modelname)
+        return classname
 
 
-def get_model_class(name):
-    ModelName = apps.get_model('StoreMenuApp', name)
-    return ModelName
-
+    def get_model_class(self):
+        ModelName = apps.get_model('StoreMenuApp', self.serilaizerzname)
+        return ModelName
+        
 
 ## در حالت نرمال جهت کنترل سطح دسترسی و لاگین بودن از : LoginRequiredMixin, PermissionRequiredMixin استفاده می شود .
-class Crud:
+class Crud(Convertors):
     def __init__(self, modelname, serialname):
-        self.modelname = modelname
-        self.serialname = serialname
+        Convertors.__init__(self, modelname = modelname, serilaizerzname = serialname)
+
 
     def Create(self):
+        SrName = Convertors(self.POST['SerializersName'], self.POST['SerializersName'])
         try:
-            SerialToCalss = str_to_class(self.POST['SerializersName'])
+            SerialToCalss = SrName.str_to_class()
             result = SerialToCalss(data = self.POST)
             if result.is_valid():
                 result.save()
@@ -52,11 +58,11 @@ class Crud:
 
 
     def FindUpdateIndo(self):
-        modelname = get_model_class(self.POST['ModelName'])
+        modelname = Convertors(self.POST['ModelName'], self.POST['ModelName'])
         ModelStrName = self.POST['ModelName']
 
         if ModelStrName == 'Store' or ModelStrName == 'GoodsAndServices' or ModelStrName == 'CustomersGroup':
-            UpdateResult = modelname.objects.filter(id=int(self.POST['rowid'])).values_list('Name', 'Status', 'Desc')[0]
+            UpdateResult = modelname.get_model_class().objects.filter(id=int(self.POST['rowid'])).values_list('Name', 'Status', 'Desc')[0]
             data = {
                 'Name': UpdateResult[0],
                 'Status': UpdateResult[1],
@@ -65,7 +71,7 @@ class Crud:
             return JsonResponse(data)
         
         elif ModelStrName == 'Customers':
-            UpdateResult = modelname.objects.filter(id=int(self.POST['rowid'])).values_list('Name', 'Family', 'Status', 'Desc', 'Group')[0]
+            UpdateResult = modelname.get_model_class().objects.filter(id=int(self.POST['rowid'])).values_list('Name', 'Family', 'Status', 'Desc', 'Group')[0]
             data = {
                 'Name': UpdateResult[0],
                 'Family': UpdateResult[1],
@@ -76,7 +82,7 @@ class Crud:
             return JsonResponse(data)
         
         elif ModelStrName == 'Recept':
-            UpdateResult = modelname.objects.filter(id=int(self.POST['rowid'])).values_list('GoAndSer', 'Custom', 'Type', 'Desc', 'Count', 'Sto')[0]
+            UpdateResult = modelname.get_model_class().objects.filter(id=int(self.POST['rowid'])).values_list('GoAndSer', 'Custom', 'Type', 'Desc', 'Count', 'Sto')[0]
             data = {
                 'GoAndSer': UpdateResult[0],
                 'Custom': UpdateResult[1],
@@ -89,12 +95,11 @@ class Crud:
     
 
     def Update(self):
+        modelname = Convertors(self.POST['ModelName'], self.POST['ModelName'])
+        SrName = Convertors(self.POST['SerializersName'], self.POST['SerializersName'])
         try:
-            modelname = get_model_class(self.POST['ModelName'])
-            SerialToCalss = str_to_class(self.POST['SerializersName'])
-
-            UpdateResult = modelname.objects.get(id=int(self.POST['rowid']))
-            result = SerialToCalss(UpdateResult, data=self.POST)
+            UpdateResult = modelname.get_model_class().objects.get(id=int(self.POST['rowid']))
+            result = SrName.str_to_class()(UpdateResult, data=self.POST)
             if result.is_valid():
                 result.save()
 
@@ -110,8 +115,8 @@ class Crud:
             return JsonResponse(data)
 
     def Delete(self):
-        modelname = get_model_class(self.POST['ModelName'])
-        DeleteIthem = get_object_or_404(modelname, id=int(self.POST['rowid']))
+        modelname = Convertors(self.POST['ModelName'], self.POST['ModelName'])
+        DeleteIthem = get_object_or_404(modelname.get_model_class(), id=int(self.POST['rowid']))
         DeleteIthem.delete()
         data = {
             'ok': 'ok'
