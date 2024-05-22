@@ -21,14 +21,19 @@ class Convertors:
         self.modelname = modelname
         self.serilaizerzname = serilaizerzname
 
+    @property
     def str_to_class(self):
         classname = getattr(sys.modules[__name__], self.modelname)
         return classname
 
-
+    @property
     def get_model_class(self):
         ModelName = apps.get_model('StoreMenuApp', self.serilaizerzname)
         return ModelName
+
+    @property
+    def __str__(self):
+        return self.modelname
         
 
 ## در حالت نرمال جهت کنترل سطح دسترسی و لاگین بودن از : LoginRequiredMixin, PermissionRequiredMixin استفاده می شود .
@@ -40,7 +45,7 @@ class Crud(Convertors):
     def Create(self):
         SrName = Convertors(self.POST['SerializersName'], self.POST['SerializersName'])
         try:
-            SerialToCalss = SrName.str_to_class()
+            SerialToCalss = SrName.str_to_class
             result = SerialToCalss(data = self.POST)
             if result.is_valid():
                 result.save()
@@ -59,10 +64,9 @@ class Crud(Convertors):
 
     def FindUpdateIndo(self):
         modelname = Convertors(self.POST['ModelName'], self.POST['ModelName'])
-        ModelStrName = self.POST['ModelName']
 
-        if ModelStrName == 'Store' or ModelStrName == 'GoodsAndServices' or ModelStrName == 'CustomersGroup':
-            UpdateResult = modelname.get_model_class().objects.filter(id=int(self.POST['rowid'])).values_list('Name', 'Status', 'Desc')[0]
+        if modelname.__str__ == 'Store' or modelname.__str__ == 'GoodsAndServices' or modelname.__str__ == 'CustomersGroup':
+            UpdateResult = modelname.get_model_class.objects.filter(id=int(self.POST['rowid'])).values_list('Name', 'Status', 'Desc')[0]
             data = {
                 'Name': UpdateResult[0],
                 'Status': UpdateResult[1],
@@ -70,8 +74,8 @@ class Crud(Convertors):
             }
             return JsonResponse(data)
         
-        elif ModelStrName == 'Customers':
-            UpdateResult = modelname.get_model_class().objects.filter(id=int(self.POST['rowid'])).values_list('Name', 'Family', 'Status', 'Desc', 'Group')[0]
+        elif modelname.__str__ == 'Customers':
+            UpdateResult = modelname.get_model_class.objects.filter(id=int(self.POST['rowid'])).values_list('Name', 'Family', 'Status', 'Desc', 'Group')[0]
             data = {
                 'Name': UpdateResult[0],
                 'Family': UpdateResult[1],
@@ -81,8 +85,8 @@ class Crud(Convertors):
             }
             return JsonResponse(data)
         
-        elif ModelStrName == 'Recept':
-            UpdateResult = modelname.get_model_class().objects.filter(id=int(self.POST['rowid'])).values_list('GoAndSer', 'Custom', 'Type', 'Desc', 'Count', 'Sto')[0]
+        elif modelname.__str__ == 'Recept':
+            UpdateResult = modelname.get_model_class.objects.filter(id=int(self.POST['rowid'])).values_list('GoAndSer', 'Custom', 'Type', 'Desc', 'Count', 'Sto')[0]
             data = {
                 'GoAndSer': UpdateResult[0],
                 'Custom': UpdateResult[1],
@@ -98,8 +102,8 @@ class Crud(Convertors):
         modelname = Convertors(self.POST['ModelName'], self.POST['ModelName'])
         SrName = Convertors(self.POST['SerializersName'], self.POST['SerializersName'])
         try:
-            UpdateResult = modelname.get_model_class().objects.get(id=int(self.POST['rowid']))
-            result = SrName.str_to_class()(UpdateResult, data=self.POST)
+            UpdateResult = modelname.get_model_class.objects.get(id=int(self.POST['rowid']))
+            result = SrName.str_to_class(UpdateResult, data=self.POST)
             if result.is_valid():
                 result.save()
 
@@ -116,7 +120,7 @@ class Crud(Convertors):
 
     def Delete(self):
         modelname = Convertors(self.POST['ModelName'], self.POST['ModelName'])
-        DeleteIthem = get_object_or_404(modelname.get_model_class(), id=int(self.POST['rowid']))
+        DeleteIthem = get_object_or_404(modelname.get_model_class, id=int(self.POST['rowid']))
         DeleteIthem.delete()
         data = {
             'ok': 'ok'
@@ -139,6 +143,7 @@ class StoreLV(ListView):
         context['Store'] = Store.objects.all()
         return context
 
+
 class MasterReport(ListView):
     model = Store
     context_object_name = 'StoreListreport'
@@ -155,63 +160,6 @@ class MasterReport(ListView):
                 resultlist.append((GoodsAndServices.objects.filter(id=list(a.values())[0]).values('Name')[0]['Name'],Store.objects.filter(id=list(a.values())[1]).values('Name')[0]['Name'], list(a.values())[2]))
         context['report'] = resultlist
         return context
-
-
-class Search:
-    def ReportFilter(self):
-        serchithem = self.POST['serchithem']
-        Gid = GoodsAndServices.objects.filter(Name__icontains = serchithem).values_list('id', flat=True)
-        findresult = Recept.objects.filter(GoAndSer__in = Gid).values('GoAndSer', 'Sto').annotate(sum=Sum('Count')).order_by('GoAndSer')
-
-        resultlist = []
-        for a in findresult:
-            if len(list(a.values()))>0:
-                resultlist.append(
-                    f'''
-                        <tr>
-                            <td>{GoodsAndServices.objects.filter(id=list(a.values())[0]).values('Name')[0]['Name']}</td>
-                            <td>{Store.objects.filter(id=list(a.values())[1]).values('Name')[0]['Name']}</td>
-                            <td>{list(a.values())[2]}</td>
-                        </tr>
-                    '''
-                )
-
-        data = {
-            'resultlist': resultlist
-        }
-
-        return JsonResponse(data)
-    
-
-    def ReportFilterByStoreID(self):
-        serchithem = '0'
-        if len(self.POST)> 1:
-            serchithem = list(self.POST['serchithem[]'])
-
-        findresult = ['0','0','0']
-        if serchithem == '0':
-            findresult = Recept.objects.filter(id__gt = 0).values('GoAndSer', 'Sto').annotate(sum=Sum('Count')).order_by('GoAndSer')
-        else:
-            findresult = Recept.objects.filter(Sto__in = serchithem).values('GoAndSer', 'Sto').annotate(sum=Sum('Count')).order_by('GoAndSer')
-
-        resultlist = []
-        for a in findresult:
-            if len(list(a.values()))>0:
-                resultlist.append(
-                    f'''
-                        <tr>
-                            <td>{GoodsAndServices.objects.filter(id=list(a.values())[0]).values('Name')[0]['Name']}</td>
-                            <td>{Store.objects.filter(id=list(a.values())[1]).values('Name')[0]['Name']}</td>
-                            <td>{list(a.values())[2]}</td>
-                        </tr>
-                    '''
-                )
-
-        data = {
-            'resultlist': resultlist
-        }
-
-        return JsonResponse(data)
         
 
 class StoreDT(BaseDatatableView):
@@ -349,4 +297,59 @@ class ReceptDT(BaseDatatableView):
         return qs
     
 
-## بخش مربوط به گزارش ها
+#بخش مربوط به کلاس های گزارش ها
+class Search:
+    def ReportFilter(self):
+        serchithem = self.POST['serchithem']
+        Gid = GoodsAndServices.objects.filter(Name__icontains = serchithem).values_list('id', flat=True)
+        findresult = Recept.objects.filter(GoAndSer__in = Gid).values('GoAndSer', 'Sto').annotate(sum=Sum('Count')).order_by('GoAndSer')
+
+        resultlist = []
+        for a in findresult:
+            if len(list(a.values()))>0:
+                resultlist.append(
+                    f'''
+                        <tr>
+                            <td>{GoodsAndServices.objects.filter(id=list(a.values())[0]).values('Name')[0]['Name']}</td>
+                            <td>{Store.objects.filter(id=list(a.values())[1]).values('Name')[0]['Name']}</td>
+                            <td>{list(a.values())[2]}</td>
+                        </tr>
+                    '''
+                )
+
+        data = {
+            'resultlist': resultlist
+        }
+
+        return JsonResponse(data)
+    
+
+    def ReportFilterByStoreID(self):
+        serchithem = '0'
+        if len(self.POST)> 1:
+            serchithem = list(self.POST['serchithem[]'])
+
+        findresult = ['0','0','0']
+        if serchithem == '0':
+            findresult = Recept.objects.filter(id__gt = 0).values('GoAndSer', 'Sto').annotate(sum=Sum('Count')).order_by('GoAndSer')
+        else:
+            findresult = Recept.objects.filter(Sto__in = serchithem).values('GoAndSer', 'Sto').annotate(sum=Sum('Count')).order_by('GoAndSer')
+
+        resultlist = []
+        for a in findresult:
+            if len(list(a.values()))>0:
+                resultlist.append(
+                    f'''
+                        <tr>
+                            <td>{GoodsAndServices.objects.filter(id=list(a.values())[0]).values('Name')[0]['Name']}</td>
+                            <td>{Store.objects.filter(id=list(a.values())[1]).values('Name')[0]['Name']}</td>
+                            <td>{list(a.values())[2]}</td>
+                        </tr>
+                    '''
+                )
+
+        data = {
+            'resultlist': resultlist
+        }
+
+        return JsonResponse(data)
